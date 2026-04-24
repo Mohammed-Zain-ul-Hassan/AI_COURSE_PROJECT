@@ -14,6 +14,13 @@ class PathRequest(BaseModel):
     def grid_must_be_nonempty(cls, v):
         if not v or not v[0]:
             raise ValueError("Grid must be a non-empty 2D array")
+        expected_row_length = len(v[0])
+        for row_index, row in enumerate(v):
+            if len(row) != expected_row_length:
+                raise ValueError(
+                    "grid rows must all have the same length "
+                    f"(expected {expected_row_length}, got {len(row)} at row {row_index})"
+                )
         return v
 
     @field_validator("start", "goal")
