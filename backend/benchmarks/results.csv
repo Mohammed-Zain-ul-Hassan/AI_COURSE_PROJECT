@@ -1,0 +1,13 @@
+case_name,algorithm,total_cost,nodes_expanded,runtime_ms
+10x10 open,astar,12.727922,10,0.061
+10x10 open,ucs,12.727922,108,0.341
+10x10 sparse obstacles,astar,13.899495,33,0.146
+10x10 sparse obstacles,ucs,13.899495,108,0.354
+20x20 open,astar,26.870058,20,0.110
+20x20 open,ucs,26.870058,436,1.486
+20x20 with walls,astar,30.384776,145,0.656
+20x20 with walls,ucs,30.384776,326,1.086
+15x15 hazards,astar,22.727922,120,0.540
+15x15 hazards,ucs,22.727922,237,0.796
+30x30 open,astar,41.012193,30,0.175
+30x30 open,ucs,41.012193,956,3.347
