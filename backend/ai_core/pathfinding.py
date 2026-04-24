@@ -14,10 +14,14 @@ class AStarPathfinder:
                    performance profiling for large grids.
     """
 
-    def __init__(self, grid: list[list[int]]):
+    STRAIGHT_COST = 1.0
+    DIAGONAL_COST = math.sqrt(2)
+
+    def __init__(self, grid: list[list[int]], use_heuristic: bool = True):
         self.grid = grid
         self.rows = len(grid)
         self.cols = len(grid[0])
+        self.use_heuristic = use_heuristic
 
         # All 8 directions: (dr, dc, is_diagonal)
         self.directions = [
@@ -32,13 +36,18 @@ class AStarPathfinder:
         ]
 
     # ------------------------------------------------------------------
-    # Heuristic — Euclidean distance (admissible for 8-directional grids)
-    # TODO (Salman): benchmark Chebyshev vs Euclidean for this cost model
+    # Heuristic — Octile distance (admissible for 8-directional grids)
+    # TODO (Salman): benchmark Chebyshev vs Octile for this cost model
     # ------------------------------------------------------------------
     def heuristic(self, node: tuple[int, int], goal: tuple[int, int]) -> float:
-        dr = node[0] - goal[0]
-        dc = node[1] - goal[1]
-        return math.sqrt(dr * dr + dc * dc)
+        if not self.use_heuristic:
+            return 0.0
+
+        dx = abs(node[0] - goal[0])
+        dy = abs(node[1] - goal[1])
+        D = self.STRAIGHT_COST
+        D2 = self.DIAGONAL_COST
+        return D * (dx + dy) + (D2 - 2 * D) * min(dx, dy)
 
     def _cell_cost(self, row: int, col: int) -> float:
         """Return traversal cost for entering a cell."""
@@ -114,8 +123,8 @@ class AStarPathfinder:
                 if step_cost == math.inf:
                     continue
 
-                # TODO (Salman): apply √2 multiplier for diagonal moves
-                # step_cost *= (math.sqrt(2) if is_diagonal else 1.0)
+                move_cost = self.DIAGONAL_COST if is_diagonal else self.STRAIGHT_COST
+                step_cost *= move_cost
 
                 tentative_g = g_score[current] + step_cost
 
@@ -147,4 +156,5 @@ class UCSPathfinder:
         self.cols = len(grid[0])
 
     def search(self, start: tuple, goal: tuple) -> dict:
-        raise NotImplementedError("UCS not yet implemented — assigned to Salman")
+        pathfinder = AStarPathfinder(self.grid, use_heuristic=False)
+        return pathfinder.search(start, goal)

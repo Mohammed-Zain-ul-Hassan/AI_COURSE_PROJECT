@@ -35,10 +35,8 @@ def calculate_path(request: PathRequest):
         pathfinder = AStarPathfinder(grid)
         result = pathfinder.search(start, goal)
     elif algorithm == "ucs":
-        raise HTTPException(
-            status_code=501,
-            detail="UCS not yet implemented — assigned to Salman",
-        )
+        pathfinder = UCSPathfinder(grid)
+        result = pathfinder.search(start, goal)
     else:
         raise HTTPException(
             status_code=400,
