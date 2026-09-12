@@ -1,0 +1,18 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "feat/pathfinding-optimization",
+    "feat/pathfinding-ui-polish",
+    "main"
+  ],
+  "parent": {
+    "feat/pathfinding-optimization": "main",
+    "feat/pathfinding-ui-polish": "main",
+    "main": null
+  },
+  "order": [
+    "main",
+    "feat/pathfinding-optimization",
+    "feat/pathfinding-ui-polish"
+  ]
+}
